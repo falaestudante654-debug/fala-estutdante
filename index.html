@@ -1,1 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Fala Estudante</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Fala Estudante</h1>
+
+<p>
+Espaço para registrar experiências, sugestões,
+elogios e reclamações relacionadas ao ambiente acadêmico.
+</p>
+
+<form id="relatoForm">
+
+<label>Tipo de relato</label>
+
+<select id="tipo">
+<option>Elogio</option>
+<option>Sugestão</option>
+<option>Reclamação</option>
+<option>Denúncia</option>
+<option>Outro</option>
+</select>
+
+<label>Data aproximada</label>
+<input type="date" id="data">
+
+<label>Local</label>
+<input type="text" id="local">
+
+<label>Descrição</label>
+<textarea id="descricao"></textarea>
+
+<button type="submit">
+Enviar Relato
+</button>
+
+</form>
+
+<div id="mensagem"></div>
+
+</div>
+
+<script type="module" src="app.js"></script>
+
+</body>
+</html>
