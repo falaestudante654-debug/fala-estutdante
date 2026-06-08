@@ -1,32 +1,59 @@
 import { db } from "./firebase-config.js";
 import { collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-const SENHA = "admin123"; // 🔒 Troque para uma senha sua
+// 🔒 Único e-mail autorizado
+const EMAIL_ADMIN = "falaestudante654@gmail.com";
 
-const btnLogin = document.getElementById("btn-login");
-const erroLogin = document.getElementById("erro-login");
-const painel = document.getElementById("painel");
+const auth = getAuth();
+const provider = new GoogleAuthProvider();
+
 const loginBox = document.getElementById("login-box");
+const painel = document.getElementById("painel");
+const erroLogin = document.getElementById("erro-login");
+const btnGoogle = document.getElementById("btn-google");
+const btnSair = document.getElementById("btn-sair");
+const usuarioLogado = document.getElementById("usuario-logado");
 const filtroTipo = document.getElementById("filtro-tipo");
 const listaRelatos = document.getElementById("lista-relatos");
 
 let todosRelatos = [];
 
-btnLogin.addEventListener("click", () => {
-  const senha = document.getElementById("senha-admin").value;
-  if (senha === SENHA) {
-    loginBox.style.display = "none";
-    painel.style.display = "block";
-    carregarRelatos();
-  } else {
-    erroLogin.textContent = "❌ Senha incorreta.";
+// Login com Google
+btnGoogle.addEventListener("click", async () => {
+  try {
+    const resultado = await signInWithPopup(auth, provider);
+    const email = resultado.user.email;
+    if (email !== EMAIL_ADMIN) {
+      await signOut(auth);
+      erroLogin.textContent = "❌ Acesso negado. Este e-mail não é autorizado.";
+    }
+  } catch (erro) {
+    erroLogin.textContent = "❌ Erro ao fazer login: " + erro.message;
   }
 });
 
-filtroTipo.addEventListener("change", () => renderRelatos());
+// Sair
+btnSair.addEventListener("click", () => signOut(auth));
+
+// Observa estado do login
+onAuthStateChanged(auth, (user) => {
+  if (user && user.email === EMAIL_ADMIN) {
+    loginBox.style.display = "none";
+    painel.style.display = "block";
+    usuarioLogado.textContent = "👤 " + user.email;
+    carregarRelatos();
+  } else {
+    loginBox.style.display = "block";
+    painel.style.display = "none";
+  }
+});
+
+filtroTipo.addEventListener("change", renderRelatos);
 
 async function carregarRelatos() {
-  listaRelatos.innerHTML = "<p>Carregando...</p>";
+  listaRelatos.innerHTML = "<p>Carregando relatos...</p>";
   const q = query(collection(db, "relatos"), orderBy("criadoEm", "desc"));
   const snap = await getDocs(q);
   todosRelatos = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -45,7 +72,7 @@ function renderRelatos() {
   }
 
   listaRelatos.innerHTML = lista.map(r => `
-    <div class="card-relato tipo-${r.tipo.toLowerCase().replace('ã','a').replace('ú','u')}">
+    <div class="card-relato tipo-${r.tipo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}">
       <div class="card-header">
         <span class="badge">${emojis[r.tipo] || "📝"} ${r.tipo}</span>
         <span class="card-data">${r.criadoEm?.toDate().toLocaleString("pt-BR") || ""}</span>
