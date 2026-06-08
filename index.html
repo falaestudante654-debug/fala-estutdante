@@ -8,35 +8,67 @@
 </head>
 <body>
 
-  <h1>Fala Estudante</h1>
-  <p>Espaço para registrar experiências, sugestões, elogios e reclamações relacionadas ao ambiente acadêmico.</p>
+  <header>
+    <div class="header-inner">
+      <span class="logo">💬</span>
+      <div>
+        <h1>Fala Estudante</h1>
+        <p>Sua voz importa. Registre elogios, sugestões, reclamações e denúncias.</p>
+      </div>
+    </div>
+  </header>
 
-  <form>
-    <label for="tipo">Tipo de relato</label>
-    <select id="tipo" required>
-      <option value="">Selecione...</option>
-      <option value="Elogio">Elogio</option>
-      <option value="Sugestão">Sugestão</option>
-      <option value="Reclamação">Reclamação</option>
-      <option value="Denúncia">Denúncia</option>
-      <option value="Outro">Outro</option>
-    </select>
+  <main>
+    <div class="tipo-cards">
+      <button class="tipo-btn active" data-value="Elogio">😊 Elogio</button>
+      <button class="tipo-btn" data-value="Sugestão">💡 Sugestão</button>
+      <button class="tipo-btn" data-value="Reclamação">😠 Reclamação</button>
+      <button class="tipo-btn" data-value="Denúncia">🚨 Denúncia</button>
+    </div>
 
-    <label for="data">Data aproximada</label>
-    <input type="date" id="data" required />
+    <form id="form-relato">
+      <input type="hidden" id="tipo" value="Elogio" />
 
-    <label for="local">Local</label>
-    <input type="text" id="local" placeholder="Ex: Bloco A, Biblioteca..." required />
+      <div class="section-title">📋 Sobre o ocorrido</div>
 
-    <label for="descricao">Descrição</label>
-    <textarea id="descricao" rows="5" placeholder="Descreva o ocorrido..." required></textarea>
+      <div class="field">
+        <label for="data">Data aproximada</label>
+        <input type="date" id="data" required />
+      </div>
 
-    <button type="submit">Enviar Relato</button>
-  </form>
+      <div class="field">
+        <label for="local">Local <span class="obrigatorio">*</span></label>
+        <input type="text" id="local" placeholder="Ex: Bloco A, Biblioteca, Cantina..." required />
+      </div>
 
-  <div id="mensagem"></div>
+      <div class="field">
+        <label for="descricao">Descrição <span class="obrigatorio">*</span></label>
+        <textarea id="descricao" rows="5" placeholder="Descreva com detalhes o que aconteceu..." required></textarea>
+      </div>
 
-  <script type="module" src="app.js"></script>
+      <div class="field">
+        <label for="imagem">📎 Imagem (opcional)</label>
+        <input type="file" id="imagem" accept="image/*" />
+        <small>Formatos aceitos: JPG, PNG, WEBP. Máx. 2MB.</small>
+      </div>
 
-</body>
-</html>
+      <div class="section-title">👤 Seus dados <span class="opcional">(todos opcionais)</span></div>
+
+      <div class="field">
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" placeholder="Como podemos te chamar?" />
+      </div>
+
+      <div class="field">
+        <label for="contato">E-mail ou WhatsApp</label>
+        <input type="text" id="contato" placeholder="Para retorno, se desejar" />
+      </div>
+
+      <div class="field">
+        <label for="curso">Curso</label>
+        <input type="text" id="curso" placeholder="Ex: Engenharia Civil, Direito..." />
+      </div>
+
+      <div class="field">
+        <label for="turma">Turma / Período</label>
+        <input type="text" id="turma" placeholder="Ex: 3º período, Turma B..." />
