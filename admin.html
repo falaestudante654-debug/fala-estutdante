@@ -13,22 +13,29 @@
       <span class="logo">🔐</span>
       <div>
         <h1>Painel Admin</h1>
-        <p>Visualize todos os relatos enviados.</p>
+        <p>Acesso restrito · Fala Estudante</p>
       </div>
     </div>
   </header>
 
-  <main id="admin-area">
+  <main>
     <div id="login-box">
-      <div class="field">
-        <label for="senha-admin">Senha de acesso</label>
-        <input type="password" id="senha-admin" placeholder="Digite a senha..." />
-      </div>
-      <button id="btn-login">Entrar</button>
+      <p style="margin-bottom:16px; color:#555; text-align:center;">
+        Apenas administradores autorizados podem acessar este painel.
+      </p>
+      <button id="btn-google">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" />
+        Entrar com Google
+      </button>
       <div id="erro-login"></div>
     </div>
 
     <div id="painel" style="display:none">
+      <div class="admin-topbar">
+        <span id="usuario-logado"></span>
+        <button id="btn-sair">Sair</button>
+      </div>
+
       <div class="filtros">
         <select id="filtro-tipo">
           <option value="">Todos os tipos</option>
@@ -38,6 +45,7 @@
           <option value="Denúncia">🚨 Denúncia</option>
         </select>
       </div>
+
       <div id="lista-relatos"></div>
     </div>
   </main>
