@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin · Fala Estudante</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <span class="logo">🔐</span>
+      <div>
+        <h1>Painel Admin</h1>
+        <p>Visualize todos os relatos enviados.</p>
+      </div>
+    </div>
+  </header>
+
+  <main id="admin-area">
+    <div id="login-box">
+      <div class="field">
+        <label for="senha-admin">Senha de acesso</label>
+        <input type="password" id="senha-admin" placeholder="Digite a senha..." />
+      </div>
+      <button id="btn-login">Entrar</button>
+      <div id="erro-login"></div>
+    </div>
+
+    <div id="painel" style="display:none">
+      <div class="filtros">
+        <select id="filtro-tipo">
+          <option value="">Todos os tipos</option>
+          <option value="Elogio">😊 Elogio</option>
+          <option value="Sugestão">💡 Sugestão</option>
+          <option value="Reclamação">😠 Reclamação</option>
+          <option value="Denúncia">🚨 Denúncia</option>
+        </select>
+      </div>
+      <div id="lista-relatos"></div>
+    </div>
+  </main>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>
