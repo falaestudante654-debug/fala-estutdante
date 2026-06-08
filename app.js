@@ -1,22 +1,27 @@
 import { db } from "./firebase-config.js";
-import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { collection, addDoc, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const form = document.getElementById("relatoForm");
+const form = document.querySelector("form");
 const mensagem = document.getElementById("mensagem");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  mensagem.textContent = "⏳ Enviando...";
+  const tipo = document.getElementById("tipo").value;
+  const data = document.getElementById("data").value;
+  const local = document.getElementById("local").value;
+  const descricao = document.getElementById("descricao").value;
+
+  mensagem.textContent = "Enviando...";
   mensagem.style.color = "gray";
 
   try {
     await addDoc(collection(db, "relatos"), {
-      tipo: document.getElementById("tipo").value,
-      data: document.getElementById("data").value,
-      local: document.getElementById("local").value,
-      descricao: document.getElementById("descricao").value,
-      criadoEm: serverTimestamp()
+      tipo,
+      data,
+      local,
+      descricao,
+      criadoEm: Timestamp.now()
     });
 
     mensagem.textContent = "✅ Relato enviado com sucesso!";
@@ -24,8 +29,8 @@ form.addEventListener("submit", async (e) => {
     form.reset();
 
   } catch (erro) {
-    console.error("Erro ao enviar:", erro);
     mensagem.textContent = "❌ Erro ao enviar: " + erro.message;
     mensagem.style.color = "red";
+    console.error(erro);
   }
 });
