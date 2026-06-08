@@ -1,3 +1,3 @@
 git add .
-git commit -m "refactor: projeto completo corrigido"
+git commit -m "feat: redesign completo com admin e upload de imagem"
 git push
