@@ -9,7 +9,8 @@ const tipoInput = document.getElementById("tipo");
 
 // Seleção de tipo por card
 tipoBtns.forEach(btn => {
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
     tipoBtns.forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     tipoInput.value = btn.dataset.value;
@@ -36,6 +37,7 @@ form.addEventListener("submit", async (e) => {
   btnEnviar.disabled = true;
   btnEnviar.textContent = "Enviando...";
   mensagem.textContent = "";
+  mensagem.className = "";
 
   try {
     const imagemBase64 = await lerImagemBase64(imagemFile);
