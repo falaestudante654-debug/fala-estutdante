@@ -1,57 +1,87 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Fala Estudante</title>
-
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fala Estudante</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
 <div class="container">
+  <h1>Fala Estudante</h1>
+  <p>Espaço para registrar experiências, sugestões, elogios e reclamações relacionadas ao ambiente acadêmico.</p>
 
-<h1>Fala Estudante</h1>
+  <form id="relatoForm">
+    <label>Tipo de relato</label>
+    <select id="tipo">
+      <option>Elogio</option>
+      <option>Sugestão</option>
+      <option>Reclamação</option>
+      <option>Denúncia</option>
+      <option>Outro</option>
+    </select>
 
-<p>
-Espaço para registrar experiências, sugestões,
-elogios e reclamações relacionadas ao ambiente acadêmico.
-</p>
+    <label>Data aproximada</label>
+    <input type="date" id="data">
 
-<form id="relatoForm">
+    <label>Local</label>
+    <input type="text" id="local">
 
-<label>Tipo de relato</label>
+    <label>Descrição</label>
+    <textarea id="descricao"></textarea>
 
-<select id="tipo">
-<option>Elogio</option>
-<option>Sugestão</option>
-<option>Reclamação</option>
-<option>Denúncia</option>
-<option>Outro</option>
-</select>
+    <button type="submit">Enviar Relato</button>
+  </form>
 
-<label>Data aproximada</label>
-<input type="date" id="data">
-
-<label>Local</label>
-<input type="text" id="local">
-
-<label>Descrição</label>
-<textarea id="descricao"></textarea>
-
-<button type="submit">
-Enviar Relato
-</button>
-
-</form>
-
-<div id="mensagem"></div>
-
+  <div id="mensagem"></div>
 </div>
 
-<script type="module" src="app.js"></script>
+<!-- Firebase via CDN (sem módulos) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
+<script>
+  // Cole aqui sua config real do Firebase
+  const firebaseConfig = {
+    apiKey: "...",
+    authDomain: "...",
+    projectId: "...",
+    storageBucket: "...",
+    messagingSenderId: "...",
+    appId: "..."
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  const form = document.getElementById("relatoForm");
+  const mensagem = document.getElementById("mensagem");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    mensagem.textContent = "⏳ Enviando...";
+    mensagem.style.color = "gray";
+
+    try {
+      await db.collection("relatos").add({
+        tipo: document.getElementById("tipo").value,
+        data: document.getElementById("data").value,
+        local: document.getElementById("local").value,
+        descricao: document.getElementById("descricao").value,
+        criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      mensagem.textContent = "✅ Relato enviado com sucesso!";
+      mensagem.style.color = "green";
+      form.reset();
+
+    } catch (erro) {
+      console.error(erro);
+      mensagem.textContent = "❌ Erro: " + erro.message;
+      mensagem.style.color = "red";
+    }
+  });
+</script>
 </body>
 </html>
